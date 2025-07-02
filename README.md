@@ -6,3 +6,4 @@ WH: https://github.com/lixinghua5540/Wuhan-dataset
 References:
 https://github.com/ChenHongruixuan/ChangeMamba
 https://github.com/LouisChen0104/swinstfm
+Input image size: 128*128
