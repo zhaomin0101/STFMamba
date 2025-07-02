@@ -193,8 +193,8 @@ def main():
     parser.add_argument('--image_size', default=[2720, 3200], type=int, help='the image size (height, width)')
     parser.add_argument('--patch_size', default=128, type=int, help='training images crop size')
     parser.add_argument('--num_epochs', default=200, type=int, help='train epoch number')
-    parser.add_argument('--root_dir', default='/home/data/zhaomin/A_ST_fusion/Mamba_test/swinstfm-main/datasets/data_LGC', help='Datasets root directory')
-    parser.add_argument('--train_dir', default='/home/data/zhaomin/A_ST_fusion/Mamba_test/swinstfm-main/datasets/train_LGC_128', help='Datasets train directory')
+    parser.add_argument('--root_dir', default='/data_LGC', help='Datasets root directory')
+    parser.add_argument('--train_dir', default='/train_LGC_128', help='Datasets train directory')
     opt = parser.parse_args()
     IMAGE_SIZE = opt.image_size
     PATCH_SIZE = opt.patch_size
