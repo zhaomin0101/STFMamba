@@ -3,8 +3,6 @@ This is the implementation of the STFMamba model for spatiotemporal satellite im
 LGC：https://data.csiro.au/collections/collection/CIcsiro:5847v003  
 DX：https://pan.baidu.com/s/1ymgud6tnY6XB5CTCXPUfnw  
 WH: https://github.com/lixinghua5540/Wuhan-dataset  
-# References:
-https://github.com/ChenHongruixuan/ChangeMamba  
-https://github.com/LouisChen0104/swinstfm  
+ 
 If you have any questions, please contact me at minzhao@mail.nwpu.edu.cn.
 
