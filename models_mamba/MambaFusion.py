@@ -63,8 +63,8 @@ class STFMamba(nn.Module):
     def forward(self, coarse_0, coarse_1, fine_0, def_device): 
         coarse0_fea = self.encoder(coarse_0) 
         coarse1_fea = self.encoder(coarse_1)
-        fine0_fea = self.encoder(fine_0)
-        #fine0_fea = self.encoder_2(fine_0) #We use shared network parameters for coarse and fine image feature extraction. If you have enough computing resources, two encoders can accelerate convergence and improve perfromence.
+        fine0_fea = self.encoder(fine_0) #We use shared network parameters for coarse and fine image feature extraction.
+        #fine0_fea = self.encoder_2(fine_0) 
         
         output_1 = self.decoder_1(coarse0_fea, coarse1_fea, fine0_fea, def_device)+fine_0
         output_2 = self.decoder(coarse0_fea, coarse1_fea, fine0_fea, def_device)+coarse_1
