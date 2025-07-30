@@ -58,7 +58,7 @@ class FinalPatchExpand_X4(nn.Module):
 class Decoder(nn.Module):
     def __init__(self, encoder_dims, channel_first, norm_layer, ssm_act_layer, mlp_act_layer, **kwargs):
         super(Decoder, self).__init__()
-        M = 48#64#48#36
+        M = 36#64#48#36
         # Define the VSS Block for Spatio-spectral- temporal relationship modelling
         self.st_block_41 = nn.Sequential(
             nn.Conv2d(kernel_size=1, in_channels=encoder_dims[-1]*3, out_channels=M),
