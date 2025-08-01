@@ -117,8 +117,7 @@ class Encoder(nn.Module):
             ssm_d_state=kwargs['ssm_d_state'], ssm_ratio=kwargs['ssm_ratio'], ssm_dt_rank=kwargs['ssm_dt_rank'], ssm_act_layer=ssm_act_layer,
             ssm_conv=kwargs['ssm_conv'], ssm_conv_bias=kwargs['ssm_conv_bias'], ssm_drop_rate=kwargs['ssm_drop_rate'], ssm_init=kwargs['ssm_init'],
             forward_type=kwargs['forward_type'], mlp_ratio=kwargs['mlp_ratio'], mlp_act_layer=mlp_act_layer, mlp_drop_rate=kwargs['mlp_drop_rate'],
-            gmlp=kwargs['gmlp'], use_checkpoint=kwargs['use_checkpoint']
-                ),
+            gmlp=kwargs['gmlp'], use_checkpoint=kwargs['use_checkpoint'] ),
                 nn.Identity() if not channel_first else Permute(0, 3, 1, 2),
                 ])
         self.downsample_3 = PatchMerging2D(192*2) 
@@ -140,13 +139,10 @@ class Encoder(nn.Module):
             ssm_d_state=kwargs['ssm_d_state'], ssm_ratio=kwargs['ssm_ratio'], ssm_dt_rank=kwargs['ssm_dt_rank'], ssm_act_layer=ssm_act_layer,
             ssm_conv=kwargs['ssm_conv'], ssm_conv_bias=kwargs['ssm_conv_bias'], ssm_drop_rate=kwargs['ssm_drop_rate'], ssm_init=kwargs['ssm_init'],
             forward_type=kwargs['forward_type'], mlp_ratio=kwargs['mlp_ratio'], mlp_act_layer=mlp_act_layer, mlp_drop_rate=kwargs['mlp_drop_rate'],
-            gmlp=kwargs['gmlp'], use_checkpoint=kwargs['use_checkpoint']
-                ),
+            gmlp=kwargs['gmlp'], use_checkpoint=kwargs['use_checkpoint'] ),
                 nn.Identity() if not channel_first else Permute(0, 3, 1, 2),
                 ])
-
         self.downsample_4 = PatchMerging2D(192*4) 
-    
         self.st_block_4 = nn.ModuleList()
         for _ in range(1):  
             self.st_block_4.extend([
@@ -156,8 +152,7 @@ class Encoder(nn.Module):
             ssm_d_state=kwargs['ssm_d_state'], ssm_ratio=kwargs['ssm_ratio'], ssm_dt_rank=kwargs['ssm_dt_rank'], ssm_act_layer=ssm_act_layer,
             ssm_conv=kwargs['ssm_conv'], ssm_conv_bias=kwargs['ssm_conv_bias'], ssm_drop_rate=kwargs['ssm_drop_rate'], ssm_init=kwargs['ssm_init'],
             forward_type=kwargs['forward_type'], mlp_ratio=kwargs['mlp_ratio'], mlp_act_layer=mlp_act_layer, mlp_drop_rate=kwargs['mlp_drop_rate'],
-            gmlp=kwargs['gmlp'], use_checkpoint=kwargs['use_checkpoint']
-                ),
+            gmlp=kwargs['gmlp'], use_checkpoint=kwargs['use_checkpoint']),
                 Permute(0, 3, 1, 2) if not channel_first else nn.Identity(),
                 nn.Identity() if not channel_first else Permute(0, 2, 3, 1),
                 VSSBlock(
@@ -165,8 +160,7 @@ class Encoder(nn.Module):
             ssm_d_state=kwargs['ssm_d_state'], ssm_ratio=kwargs['ssm_ratio'], ssm_dt_rank=kwargs['ssm_dt_rank'], ssm_act_layer=ssm_act_layer,
             ssm_conv=kwargs['ssm_conv'], ssm_conv_bias=kwargs['ssm_conv_bias'], ssm_drop_rate=kwargs['ssm_drop_rate'], ssm_init=kwargs['ssm_init'],
             forward_type=kwargs['forward_type'], mlp_ratio=kwargs['mlp_ratio'], mlp_act_layer=mlp_act_layer, mlp_drop_rate=kwargs['mlp_drop_rate'],
-            gmlp=kwargs['gmlp'], use_checkpoint=kwargs['use_checkpoint']
-                ),
+            gmlp=kwargs['gmlp'], use_checkpoint=kwargs['use_checkpoint']),
                 nn.Identity() if not channel_first else Permute(0, 3, 1, 2),
                 ])
 
