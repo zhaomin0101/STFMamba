@@ -1,5 +1,5 @@
 import torch.nn as nn
-from classification.models.vmamba import LayerNorm2d
+from model_VSS.vmamba import LayerNorm2d
 from models_mamba.Mamba_decoder import Decoder
 from models_mamba.Mamba_encoder import Encoder
 import torch.nn as nn
