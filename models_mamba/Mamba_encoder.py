@@ -75,117 +75,117 @@ class Encoder(nn.Module):
 
         self.patch_emb = PatchEmbed2D()
         self.downsample_1 = PatchMerging2D(96) 
-        self.st_block_11 = nn.ModuleList(
-            [Permute(0, 2, 3, 1) if not channel_first else nn.Identity(),
-            *[VSSBlock(hidden_dim=96, drop_path=0.1, norm_layer=norm_layer, channel_first=channel_first,
-                ssm_d_state=kwargs['ssm_d_state'], ssm_ratio=kwargs['ssm_ratio'], ssm_dt_rank=kwargs['ssm_dt_rank'], ssm_act_layer=ssm_act_layer,
-                ssm_conv=kwargs['ssm_conv'], ssm_conv_bias=kwargs['ssm_conv_bias'], ssm_drop_rate=kwargs['ssm_drop_rate'], ssm_init=kwargs['ssm_init'],
-                forward_type=kwargs['forward_type'], mlp_ratio=kwargs['mlp_ratio'], mlp_act_layer=mlp_act_layer, mlp_drop_rate=kwargs['mlp_drop_rate'],
-                gmlp=kwargs['gmlp'], use_checkpoint=kwargs['use_checkpoint']) 
-                for _ in range(2)],
-            Permute(0, 3, 1, 2) if not channel_first else nn.Identity()]
-        )
-        self.st_block_12 = nn.ModuleList(
-            [nn.Identity() if not channel_first else Permute(0, 2, 3, 1),
-            *[VSSBlock(hidden_dim=32, drop_path=0.1, norm_layer=norm_layer, channel_first=channel_first,
-                ssm_d_state=kwargs['ssm_d_state'], ssm_ratio=kwargs['ssm_ratio'], ssm_dt_rank=kwargs['ssm_dt_rank'], ssm_act_layer=ssm_act_layer,
-                ssm_conv=kwargs['ssm_conv'], ssm_conv_bias=kwargs['ssm_conv_bias'], ssm_drop_rate=kwargs['ssm_drop_rate'], ssm_init=kwargs['ssm_init'],
-                forward_type=kwargs['forward_type'], mlp_ratio=kwargs['mlp_ratio'], mlp_act_layer=mlp_act_layer, mlp_drop_rate=kwargs['mlp_drop_rate'],
-                gmlp=kwargs['gmlp'], use_checkpoint=kwargs['use_checkpoint'])
-                 for _ in range(2)],
-            nn.Identity() if not channel_first else Permute(0, 3, 1, 2),]
-        )
-
+        self.st_block_1 = nn.ModuleList()
+        for _ in range(2):  
+            self.st_block_1.extend([
+                Permute(0, 2, 3, 1) if not channel_first else nn.Identity(),
+                VSSBlock(
+            hidden_dim=96, drop_path=0.1, norm_layer=norm_layer, channel_first=channel_first,
+            ssm_d_state=kwargs['ssm_d_state'], ssm_ratio=kwargs['ssm_ratio'], ssm_dt_rank=kwargs['ssm_dt_rank'], ssm_act_layer=ssm_act_layer,
+            ssm_conv=kwargs['ssm_conv'], ssm_conv_bias=kwargs['ssm_conv_bias'], ssm_drop_rate=kwargs['ssm_drop_rate'], ssm_init=kwargs['ssm_init'],
+            forward_type=kwargs['forward_type'], mlp_ratio=kwargs['mlp_ratio'], mlp_act_layer=mlp_act_layer, mlp_drop_rate=kwargs['mlp_drop_rate'],
+            gmlp=kwargs['gmlp'], use_checkpoint=kwargs['use_checkpoint']
+                ),
+                Permute(0, 3, 1, 2) if not channel_first else nn.Identity(),
+                nn.Identity() if not channel_first else Permute(0, 2, 3, 1),
+                VSSBlock(
+            hidden_dim=32, drop_path=0.1, norm_layer=norm_layer, channel_first=channel_first,
+            ssm_d_state=kwargs['ssm_d_state'], ssm_ratio=kwargs['ssm_ratio'], ssm_dt_rank=kwargs['ssm_dt_rank'], ssm_act_layer=ssm_act_layer,
+            ssm_conv=kwargs['ssm_conv'], ssm_conv_bias=kwargs['ssm_conv_bias'], ssm_drop_rate=kwargs['ssm_drop_rate'], ssm_init=kwargs['ssm_init'],
+            forward_type=kwargs['forward_type'], mlp_ratio=kwargs['mlp_ratio'], mlp_act_layer=mlp_act_layer, mlp_drop_rate=kwargs['mlp_drop_rate'],
+            gmlp=kwargs['gmlp'], use_checkpoint=kwargs['use_checkpoint']
+                ),
+                nn.Identity() if not channel_first else Permute(0, 3, 1, 2),
+                ])
+            
         self.downsample_2 = PatchMerging2D(192) 
-        self.st_block_21 = nn.ModuleList(
-            [Permute(0, 2, 3, 1) if not channel_first else nn.Identity(),
-            *[VSSBlock(hidden_dim=192, drop_path=0.1, norm_layer=norm_layer, channel_first=channel_first,
-                ssm_d_state=kwargs['ssm_d_state'], ssm_ratio=kwargs['ssm_ratio'], ssm_dt_rank=kwargs['ssm_dt_rank'], ssm_act_layer=ssm_act_layer,
-                ssm_conv=kwargs['ssm_conv'], ssm_conv_bias=kwargs['ssm_conv_bias'], ssm_drop_rate=kwargs['ssm_drop_rate'], ssm_init=kwargs['ssm_init'],
-                forward_type=kwargs['forward_type'], mlp_ratio=kwargs['mlp_ratio'], mlp_act_layer=mlp_act_layer, mlp_drop_rate=kwargs['mlp_drop_rate'],
-                gmlp=kwargs['gmlp'], use_checkpoint=kwargs['use_checkpoint']) 
-                for _ in range(2)],
-            Permute(0, 3, 1, 2) if not channel_first else nn.Identity()]
-        )
-        self.st_block_22 = nn.ModuleList(
-            [nn.Identity() if not channel_first else Permute(0, 2, 3, 1),
-            *[VSSBlock(hidden_dim=16, drop_path=0.1, norm_layer=norm_layer, channel_first=channel_first,
-                ssm_d_state=kwargs['ssm_d_state'], ssm_ratio=kwargs['ssm_ratio'], ssm_dt_rank=kwargs['ssm_dt_rank'], ssm_act_layer=ssm_act_layer,
-                ssm_conv=kwargs['ssm_conv'], ssm_conv_bias=kwargs['ssm_conv_bias'], ssm_drop_rate=kwargs['ssm_drop_rate'], ssm_init=kwargs['ssm_init'],
-                forward_type=kwargs['forward_type'], mlp_ratio=kwargs['mlp_ratio'], mlp_act_layer=mlp_act_layer, mlp_drop_rate=kwargs['mlp_drop_rate'],
-                gmlp=kwargs['gmlp'], use_checkpoint=kwargs['use_checkpoint'])
-                 for _ in range(2)],
-            nn.Identity() if not channel_first else Permute(0, 3, 1, 2),]
-        )
+        self.st_block_2 = nn.ModuleList()
+        for _ in range(2):  
+            self.st_block_2.extend([
+                Permute(0, 2, 3, 1) if not channel_first else nn.Identity(),
+                VSSBlock(
+            hidden_dim=192, drop_path=0.1, norm_layer=norm_layer, channel_first=channel_first,
+            ssm_d_state=kwargs['ssm_d_state'], ssm_ratio=kwargs['ssm_ratio'], ssm_dt_rank=kwargs['ssm_dt_rank'], ssm_act_layer=ssm_act_layer,
+            ssm_conv=kwargs['ssm_conv'], ssm_conv_bias=kwargs['ssm_conv_bias'], ssm_drop_rate=kwargs['ssm_drop_rate'], ssm_init=kwargs['ssm_init'],
+            forward_type=kwargs['forward_type'], mlp_ratio=kwargs['mlp_ratio'], mlp_act_layer=mlp_act_layer, mlp_drop_rate=kwargs['mlp_drop_rate'],
+            gmlp=kwargs['gmlp'], use_checkpoint=kwargs['use_checkpoint']
+                ),
+                Permute(0, 3, 1, 2) if not channel_first else nn.Identity(),
+                nn.Identity() if not channel_first else Permute(0, 2, 3, 1),
+                VSSBlock(
+            hidden_dim=16, drop_path=0.1, norm_layer=norm_layer, channel_first=channel_first,
+            ssm_d_state=kwargs['ssm_d_state'], ssm_ratio=kwargs['ssm_ratio'], ssm_dt_rank=kwargs['ssm_dt_rank'], ssm_act_layer=ssm_act_layer,
+            ssm_conv=kwargs['ssm_conv'], ssm_conv_bias=kwargs['ssm_conv_bias'], ssm_drop_rate=kwargs['ssm_drop_rate'], ssm_init=kwargs['ssm_init'],
+            forward_type=kwargs['forward_type'], mlp_ratio=kwargs['mlp_ratio'], mlp_act_layer=mlp_act_layer, mlp_drop_rate=kwargs['mlp_drop_rate'],
+            gmlp=kwargs['gmlp'], use_checkpoint=kwargs['use_checkpoint']
+                ),
+                nn.Identity() if not channel_first else Permute(0, 3, 1, 2),
+                ])
         self.downsample_3 = PatchMerging2D(192*2) 
-        self.st_block_31 = nn.ModuleList(
-            [Permute(0, 2, 3, 1) if not channel_first else nn.Identity(),
-            *[VSSBlock(hidden_dim=192*2, drop_path=0.1, norm_layer=norm_layer, channel_first=channel_first,
-                ssm_d_state=kwargs['ssm_d_state'], ssm_ratio=kwargs['ssm_ratio'], ssm_dt_rank=kwargs['ssm_dt_rank'], ssm_act_layer=ssm_act_layer,
-                ssm_conv=kwargs['ssm_conv'], ssm_conv_bias=kwargs['ssm_conv_bias'], ssm_drop_rate=kwargs['ssm_drop_rate'], ssm_init=kwargs['ssm_init'],
-                forward_type=kwargs['forward_type'], mlp_ratio=kwargs['mlp_ratio'], mlp_act_layer=mlp_act_layer, mlp_drop_rate=kwargs['mlp_drop_rate'],
-                gmlp=kwargs['gmlp'], use_checkpoint=kwargs['use_checkpoint']) 
-                for _ in range(2)],
-                #for _ in range(4)],
-            Permute(0, 3, 1, 2) if not channel_first else nn.Identity()]
-        )
-        self.st_block_32 = nn.ModuleList(
-            [nn.Identity() if not channel_first else Permute(0, 2, 3, 1),
-            *[VSSBlock(hidden_dim=8, drop_path=0.1, norm_layer=norm_layer, channel_first=channel_first,
-                ssm_d_state=kwargs['ssm_d_state'], ssm_ratio=kwargs['ssm_ratio'], ssm_dt_rank=kwargs['ssm_dt_rank'], ssm_act_layer=ssm_act_layer,
-                ssm_conv=kwargs['ssm_conv'], ssm_conv_bias=kwargs['ssm_conv_bias'], ssm_drop_rate=kwargs['ssm_drop_rate'], ssm_init=kwargs['ssm_init'],
-                forward_type=kwargs['forward_type'], mlp_ratio=kwargs['mlp_ratio'], mlp_act_layer=mlp_act_layer, mlp_drop_rate=kwargs['mlp_drop_rate'],
-                gmlp=kwargs['gmlp'], use_checkpoint=kwargs['use_checkpoint'])
-                 for _ in range(2)],
-                #for _ in range(4)],
-            nn.Identity() if not channel_first else Permute(0, 3, 1, 2),]
-        )
+        self.st_block_3 = nn.ModuleList()
+        for _ in range(2):  
+            self.st_block_3.extend([
+                Permute(0, 2, 3, 1) if not channel_first else nn.Identity(),
+                VSSBlock(
+            hidden_dim=192*2, drop_path=0.1, norm_layer=norm_layer, channel_first=channel_first,
+            ssm_d_state=kwargs['ssm_d_state'], ssm_ratio=kwargs['ssm_ratio'], ssm_dt_rank=kwargs['ssm_dt_rank'], ssm_act_layer=ssm_act_layer,
+            ssm_conv=kwargs['ssm_conv'], ssm_conv_bias=kwargs['ssm_conv_bias'], ssm_drop_rate=kwargs['ssm_drop_rate'], ssm_init=kwargs['ssm_init'],
+            forward_type=kwargs['forward_type'], mlp_ratio=kwargs['mlp_ratio'], mlp_act_layer=mlp_act_layer, mlp_drop_rate=kwargs['mlp_drop_rate'],
+            gmlp=kwargs['gmlp'], use_checkpoint=kwargs['use_checkpoint']
+                ),
+                Permute(0, 3, 1, 2) if not channel_first else nn.Identity(),
+                nn.Identity() if not channel_first else Permute(0, 2, 3, 1),
+                VSSBlock(
+            hidden_dim=8, drop_path=0.1, norm_layer=norm_layer, channel_first=channel_first,
+            ssm_d_state=kwargs['ssm_d_state'], ssm_ratio=kwargs['ssm_ratio'], ssm_dt_rank=kwargs['ssm_dt_rank'], ssm_act_layer=ssm_act_layer,
+            ssm_conv=kwargs['ssm_conv'], ssm_conv_bias=kwargs['ssm_conv_bias'], ssm_drop_rate=kwargs['ssm_drop_rate'], ssm_init=kwargs['ssm_init'],
+            forward_type=kwargs['forward_type'], mlp_ratio=kwargs['mlp_ratio'], mlp_act_layer=mlp_act_layer, mlp_drop_rate=kwargs['mlp_drop_rate'],
+            gmlp=kwargs['gmlp'], use_checkpoint=kwargs['use_checkpoint']
+                ),
+                nn.Identity() if not channel_first else Permute(0, 3, 1, 2),
+                ])
+
         self.downsample_4 = PatchMerging2D(192*4) 
-        self.st_block_41 = nn.ModuleList(
-            [Permute(0, 2, 3, 1) if not channel_first else nn.Identity(),
-            *[VSSBlock(hidden_dim=192*4, drop_path=0.1, norm_layer=norm_layer, channel_first=channel_first,
-                ssm_d_state=kwargs['ssm_d_state'], ssm_ratio=kwargs['ssm_ratio'], ssm_dt_rank=kwargs['ssm_dt_rank'], ssm_act_layer=ssm_act_layer,
-                ssm_conv=kwargs['ssm_conv'], ssm_conv_bias=kwargs['ssm_conv_bias'], ssm_drop_rate=kwargs['ssm_drop_rate'], ssm_init=kwargs['ssm_init'],
-                forward_type=kwargs['forward_type'], mlp_ratio=kwargs['mlp_ratio'], mlp_act_layer=mlp_act_layer, mlp_drop_rate=kwargs['mlp_drop_rate'],
-                gmlp=kwargs['gmlp'], use_checkpoint=kwargs['use_checkpoint']) 
-                for _ in range(1)],
-            Permute(0, 3, 1, 2) if not channel_first else nn.Identity()]
-        )
-        self.st_block_42 = nn.ModuleList(
-            [nn.Identity() if not channel_first else Permute(0, 2, 3, 1),
-            *[VSSBlock(hidden_dim=4, drop_path=0.1, norm_layer=norm_layer, channel_first=channel_first,
-                ssm_d_state=kwargs['ssm_d_state'], ssm_ratio=kwargs['ssm_ratio'], ssm_dt_rank=kwargs['ssm_dt_rank'], ssm_act_layer=ssm_act_layer,
-                ssm_conv=kwargs['ssm_conv'], ssm_conv_bias=kwargs['ssm_conv_bias'], ssm_drop_rate=kwargs['ssm_drop_rate'], ssm_init=kwargs['ssm_init'],
-                forward_type=kwargs['forward_type'], mlp_ratio=kwargs['mlp_ratio'], mlp_act_layer=mlp_act_layer, mlp_drop_rate=kwargs['mlp_drop_rate'],
-                gmlp=kwargs['gmlp'], use_checkpoint=kwargs['use_checkpoint'])
-                 for _ in range(2)],
-            nn.Identity() if not channel_first else Permute(0, 3, 1, 2),]
-        )
-        
+    
+        self.st_block_4 = nn.ModuleList()
+        for _ in range(1):  
+            self.st_block_4.extend([
+                Permute(0, 2, 3, 1) if not channel_first else nn.Identity(),
+                VSSBlock(
+            hidden_dim=192*4, drop_path=0.1, norm_layer=norm_layer, channel_first=channel_first,
+            ssm_d_state=kwargs['ssm_d_state'], ssm_ratio=kwargs['ssm_ratio'], ssm_dt_rank=kwargs['ssm_dt_rank'], ssm_act_layer=ssm_act_layer,
+            ssm_conv=kwargs['ssm_conv'], ssm_conv_bias=kwargs['ssm_conv_bias'], ssm_drop_rate=kwargs['ssm_drop_rate'], ssm_init=kwargs['ssm_init'],
+            forward_type=kwargs['forward_type'], mlp_ratio=kwargs['mlp_ratio'], mlp_act_layer=mlp_act_layer, mlp_drop_rate=kwargs['mlp_drop_rate'],
+            gmlp=kwargs['gmlp'], use_checkpoint=kwargs['use_checkpoint']
+                ),
+                Permute(0, 3, 1, 2) if not channel_first else nn.Identity(),
+                nn.Identity() if not channel_first else Permute(0, 2, 3, 1),
+                VSSBlock(
+            hidden_dim=4, drop_path=0.1, norm_layer=norm_layer, channel_first=channel_first,
+            ssm_d_state=kwargs['ssm_d_state'], ssm_ratio=kwargs['ssm_ratio'], ssm_dt_rank=kwargs['ssm_dt_rank'], ssm_act_layer=ssm_act_layer,
+            ssm_conv=kwargs['ssm_conv'], ssm_conv_bias=kwargs['ssm_conv_bias'], ssm_drop_rate=kwargs['ssm_drop_rate'], ssm_init=kwargs['ssm_init'],
+            forward_type=kwargs['forward_type'], mlp_ratio=kwargs['mlp_ratio'], mlp_act_layer=mlp_act_layer, mlp_drop_rate=kwargs['mlp_drop_rate'],
+            gmlp=kwargs['gmlp'], use_checkpoint=kwargs['use_checkpoint']
+                ),
+                nn.Identity() if not channel_first else Permute(0, 3, 1, 2),
+                ])
+
     def forward(self, x):
         output = []
         x = self.patch_emb(x)
-        for index, module in enumerate(self.st_block_11):
-            x = module(x)
-        for index, module in enumerate(self.st_block_12):
+        for index, module in enumerate(self.st_block_1):
             x = module(x)
         output.append(x)
         x = self.downsample_1(x)
-        for index, module in enumerate(self.st_block_21):
-            x = module(x)
-        for index, module in enumerate(self.st_block_22):
+        for index, module in enumerate(self.st_block_2):
             x = module(x)
         output.append(x)
         x = self.downsample_2(x)
-        for index, module in enumerate(self.st_block_31):
-            x = module(x)
-        for index, module in enumerate(self.st_block_32):
+        for index, module in enumerate(self.st_block_3):
             x = module(x)
         output.append(x)
         x = self.downsample_3(x)
-        for index, module in enumerate(self.st_block_41):
-            x = module(x)
-        for index, module in enumerate(self.st_block_42):
+        for index, module in enumerate(self.st_block_4):
             x = module(x)
         output.append(x)
         return output
