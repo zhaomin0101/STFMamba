@@ -1,5 +1,5 @@
 import torch.nn as nn
-from classification.models.vmamba import LayerNorm2d
+from model_VSS.vmamba import LayerNorm2d
 from models_mamba.MambaSRmodel import MambaSRmodel
 import torch.nn as nn
 import torch.nn.functional as F
