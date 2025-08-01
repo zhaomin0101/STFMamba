@@ -4,20 +4,11 @@ import torch.nn.functional as F
 
 def split_image_tensor(input_tensor, block_size):
     
-    # 获取输入张量的形状
     batch_size, channels, height, width = input_tensor.shape
-    
-    # 计算沿高度和宽度方向的小块数量
     num_blocks_height = height // block_size
     num_blocks_width = width // block_size
-    
-    # 使用 unfold 将每个通道切成指定大小的小块
     unfolded_tensor = input_tensor.unfold(2, block_size, block_size).unfold(3, block_size, block_size)
-    
-    # 调整维度顺序并合并批次和块数
     unfolded_tensor = unfolded_tensor.permute(0, 2, 3, 1, 4, 5).contiguous()
-    
-    # 最后调整形状
     output_tensor = unfolded_tensor.view(-1, channels, block_size, block_size)
     
     return output_tensor
@@ -64,13 +55,11 @@ class Cross_MultiAttention(nn.Module):
         # img2 = self.down_conv(img2)
         img1 = split_image_tensor(img1,16)
         img2 = split_image_tensor(img2,16)
-        B, C, H, W = img1.shape  # 假设输入形状为 [B, 6, 256, 256]
+        B, C, H, W = img1.shape  # [B, 6, 256, 256]
         img1_flat = img1.view(B, C, H * W).permute(0, 2, 1)  # (B, 16*16, 6)
         img2_flat = img2.view(B, C, H * W).permute(0, 2, 1)  # (B, 16*16, 6)
 
         img_cat = torch.cat((img1_flat, img2_flat), dim=2)
-
-        # 将 6 维通道特征嵌入到指定的 embed_dim 维度
         img1_emb = self.embedding(img1_flat)  # (B, 16*16, embed_dim)
         img2_emb = self.embedding(img2_flat)
         img_emb = self.embedding_2(img_cat)
@@ -90,7 +79,6 @@ class Cross_MultiAttention(nn.Module):
         att_weights = att_weights * self.scale 
  
         # if pad_mask is not None:
-        #     # 因为是多头，所以mask矩阵维度要扩充到4维  [batch_size, h*w, seq_len] -> [batch_size, nums_head, h*w, seq_len]
         #     pad_mask = pad_mask.unsqueeze(1).repeat(1, self.num_heads, 1, 1)
         #     att_weights = att_weights.masked_fill(pad_mask, -1e9)
  
