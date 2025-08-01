@@ -35,13 +35,6 @@ class STFMamba(nn.Module):
             mlp_act_layer=mlp_act_layer,
             **clean_kwargs
         )
-        self.encoder_2 = Encoder(
-            channel_first=False,
-            norm_layer=norm_layer,
-            ssm_act_layer=ssm_act_layer,
-            mlp_act_layer=mlp_act_layer,
-            **clean_kwargs
-        )
 
         self.decoder_1 = Decoder(
             encoder_dims=[96,192,192*2,192*2*2],
@@ -64,8 +57,6 @@ class STFMamba(nn.Module):
         coarse0_fea = self.encoder(coarse_0) 
         coarse1_fea = self.encoder(coarse_1)
         fine0_fea = self.encoder(fine_0) #We use shared network parameters for coarse and fine image feature extraction.
-        #fine0_fea = self.encoder_2(fine_0) 
-        
         output_1 = self.decoder_1(coarse0_fea, coarse1_fea, fine0_fea, def_device)+fine_0
         output_2 = self.decoder(coarse0_fea, coarse1_fea, fine0_fea, def_device)+coarse_1
         return output_1, output_2
