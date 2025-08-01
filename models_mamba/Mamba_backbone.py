@@ -1,6 +1,5 @@
 import sys
-sys.path.append('/home/data/zhaomin/A_ST_fusion/Mamba/MambaCD-master')
-from classification.models.vmamba import VSSM, LayerNorm2d
+from models_mamba.model_VSS.vmamba import VSSM, LayerNorm2d
 
 import torch
 import torch.nn as nn
