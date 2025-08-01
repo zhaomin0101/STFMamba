@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from classification.models.vmamba import VSSBlock, Permute
+from models_mamba.model_VSS.vmamba import VSSBlock, Permute
 from einops import rearrange
 
 class PatchExpand(nn.Module):
