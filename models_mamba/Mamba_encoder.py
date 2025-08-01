@@ -1,6 +1,6 @@
 import torch
 import torch.nn as nn
-from classification.models.vmamba import VSSBlock, Permute
+from models_mamba.model_VSS.vmamba import VSSBlock, Permute
 
 class PatchEmbed2D(nn.Module):
     r""" Image to Patch Embedding
