@@ -23,8 +23,7 @@ class MambaSRmodel(nn.Module):
                 gmlp=kwargs['gmlp'], use_checkpoint=kwargs['use_checkpoint'])
                  for _ in range(2)]]
         )
-        self.conv_final = nn.Conv2d(12, 6, 3, 1, 1)
-        self.upsample = nn.Upsample(scale_factor=2, mode='bilinear', align_corners=True)
+        self.conv_final = nn.ConvTranspose2d( in_channels=12, out_channels=6, kernel_size=4, stride=2, padding=1)
         
 
     def forward(self, x):
@@ -54,7 +53,6 @@ class MambaSRmodel(nn.Module):
         for index, module in enumerate(self.st_block_12):
             output = module(output.permute(0, 2, 3, 1)).permute(0, 3, 1, 2)
         output = output+x
-        output = self.upsample(output)
         output = self.conv_final(output)
         output = input+output
         return output
