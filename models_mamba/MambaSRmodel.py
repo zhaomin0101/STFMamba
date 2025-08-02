@@ -1,6 +1,6 @@
 import copy
 import torch.nn as nn
-from classification.models.vmamba import VSSBlock, Permute
+from models_mamba.model_VSS.vmamba import VSSBlock, Permute
 
 class MambaSRmodel(nn.Module):
     def __init__(self, channel_first=False, norm_layer="LN", ssm_act_layer="silu", mlp_act_layer="gelu", **kwargs):
