@@ -142,7 +142,6 @@ class Encoder(nn.Module):
             gmlp=kwargs['gmlp'], use_checkpoint=kwargs['use_checkpoint'] ),
                 nn.Identity() if not channel_first else Permute(0, 3, 1, 2),
                 ])
-        self.downsample_4 = PatchMerging2D(192*4) 
         self.st_block_4 = nn.ModuleList()
         for _ in range(1):  
             self.st_block_4.extend([
