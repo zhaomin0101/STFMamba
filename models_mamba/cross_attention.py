@@ -88,6 +88,6 @@ class Cross_MultiAttention(nn.Module):
         out1 = out1.transpose(1, 2).contiguous().view(B, -1, self.emb_dim)   
         out1 = out1.permute(0, 2, 1).view(B, self.emb_dim, H, W)
         out = torch.cat((out, out1), dim=1) 
-        out = self.proj_out(out)   # [batch_size, c, h, w]
+        out = self.proj_out(out)  
         out = combine_image_tensor(out, 16, 128, 128)
         return out
