@@ -62,14 +62,14 @@ class Cross_MultiAttention(nn.Module):
         img2_emb = self.embedding(img2_flat)
         img_emb = self.embedding_2(img_cat)
  
-        Q1 = self.Wq(img1_emb)  # [batch_size, h*w, emb_dim] = (B, 16*16, embed_dim)
+        Q1 = self.Wq(img1_emb)  
         Q2 = self.Wq(img2_emb)
-        K = self.Wk(img_emb)  # [batch_szie, seq_len, emb_dim] = (B, 16*16, embed_dim)
+        K = self.Wk(img_emb)  
         V = self.Wv(img_emb)
  
-        Q1 = Q1.view(B, -1, self.num_heads, self.depth).transpose(1, 2)  # [batch_size, num_heads, h*w, depth]
+        Q1 = Q1.view(B, -1, self.num_heads, self.depth).transpose(1, 2) 
         Q2 = Q2.view(B, -1, self.num_heads, self.depth).transpose(1, 2) 
-        K = K.view(B, -1, self.num_heads, self.depth).transpose(1, 2)  # [batch_size, num_heads, seq_len, depth]
+        K = K.view(B, -1, self.num_heads, self.depth).transpose(1, 2)  
         V = V.view(B, -1, self.num_heads, self.depth).transpose(1, 2)
  
         att_weights = torch.einsum('bnid,bnjd -> bnij', Q1, K)
@@ -82,10 +82,10 @@ class Cross_MultiAttention(nn.Module):
         att_weights1 = F.softmax(att_weights1, dim=-1)
         out1 = torch.einsum('bnij, bnjd -> bnid', att_weights1, V) 
 
-        out = out.transpose(1, 2).contiguous().view(B, -1, self.emb_dim)   # [batch_size, h*w, emb_dim]
+        out = out.transpose(1, 2).contiguous().view(B, -1, self.emb_dim)   
         out = out.permute(0, 2, 1).view(B, self.emb_dim, H, W) 
 
-        out1 = out1.transpose(1, 2).contiguous().view(B, -1, self.emb_dim)   # [batch_size, h*w, emb_dim]
+        out1 = out1.transpose(1, 2).contiguous().view(B, -1, self.emb_dim)   
         out1 = out1.permute(0, 2, 1).view(B, self.emb_dim, H, W)
         out = torch.cat((out, out1), dim=1) 
         out = self.proj_out(out)   # [batch_size, c, h, w]
