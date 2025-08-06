@@ -38,8 +38,8 @@ class Cross_MultiAttention(nn.Module):
         self.depth = emb_dim // num_heads
  
  
-        self.embedding = nn.Linear(6, emb_dim) #改
-        self.embedding_2 = nn.Linear(12, emb_dim) #改
+        self.embedding = nn.Linear(6, emb_dim) 
+        self.embedding_2 = nn.Linear(12, emb_dim) 
         self.down_conv = nn.Conv2d(in_channels=6, out_channels=6, kernel_size=4, stride=4, padding=0)
  
         self.Wq = nn.Linear(emb_dim, emb_dim)
@@ -51,16 +51,14 @@ class Cross_MultiAttention(nn.Module):
  
  
     def forward(self, img1, img2, pad_mask=None):
-        # img1 = self.down_conv(img1)
-        # img2 = self.down_conv(img2)
         img1 = split_image_tensor(img1,16)
         img2 = split_image_tensor(img2,16)
-        B, C, H, W = img1.shape  # [B, 6, 256, 256]
-        img1_flat = img1.view(B, C, H * W).permute(0, 2, 1)  # (B, 16*16, 6)
-        img2_flat = img2.view(B, C, H * W).permute(0, 2, 1)  # (B, 16*16, 6)
+        B, C, H, W = img1.shape  
+        img1_flat = img1.view(B, C, H * W).permute(0, 2, 1)  
+        img2_flat = img2.view(B, C, H * W).permute(0, 2, 1)  
 
         img_cat = torch.cat((img1_flat, img2_flat), dim=2)
-        img1_emb = self.embedding(img1_flat)  # (B, 16*16, embed_dim)
+        img1_emb = self.embedding(img1_flat) 
         img2_emb = self.embedding(img2_flat)
         img_emb = self.embedding_2(img_cat)
  
@@ -74,14 +72,8 @@ class Cross_MultiAttention(nn.Module):
         K = K.view(B, -1, self.num_heads, self.depth).transpose(1, 2)  # [batch_size, num_heads, seq_len, depth]
         V = V.view(B, -1, self.num_heads, self.depth).transpose(1, 2)
  
-        # [batch_size, num_heads, h*w, seq_len]
         att_weights = torch.einsum('bnid,bnjd -> bnij', Q1, K)
         att_weights = att_weights * self.scale 
- 
-        # if pad_mask is not None:
-        #     pad_mask = pad_mask.unsqueeze(1).repeat(1, self.num_heads, 1, 1)
-        #     att_weights = att_weights.masked_fill(pad_mask, -1e9)
- 
         att_weights = F.softmax(att_weights, dim=-1)
         out = torch.einsum('bnij, bnjd -> bnid', att_weights, V)
 
@@ -96,8 +88,6 @@ class Cross_MultiAttention(nn.Module):
         out1 = out1.transpose(1, 2).contiguous().view(B, -1, self.emb_dim)   # [batch_size, h*w, emb_dim]
         out1 = out1.permute(0, 2, 1).view(B, self.emb_dim, H, W)
         out = torch.cat((out, out1), dim=1) 
-        #out = rearrange(out, 'b (h w) c -> b c h w', h=h, w=w)   # [batch_size, c, h, w]
         out = self.proj_out(out)   # [batch_size, c, h, w]
-        #out = self.deconv_layer(out)
         out = combine_image_tensor(out, 16, 128, 128)
         return out
